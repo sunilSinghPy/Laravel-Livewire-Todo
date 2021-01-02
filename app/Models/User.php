@@ -20,6 +20,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
     ];
 
     /**
@@ -40,4 +41,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // /**
+    //  * The accesser for ucFisrt name.
+    //  */
+    // public function getNameAttribute($value){
+    //     return "my name is  :". ucfirst($value);
+    // }
+
+    //  /**
+    //   *The mutater For hashing password
+    //   */
+    // public function setPasswordAttribute($password){
+    //     $this->attributes['password'] = bcrypt($password);
+    // }
 }
