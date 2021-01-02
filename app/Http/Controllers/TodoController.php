@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\PseudoTypes\False_;
 
 class TodoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+    }
     public function index()
     {
         $todos = Todo::orderBy('completed')->get();
@@ -54,14 +57,13 @@ class TodoController extends Controller
     }
     public function complete(Todo $todo)
     {
-        if(!$todo->completed){
-            $todo->update(['completed'=>true]);
+        if (!$todo->completed) {
+            $todo->update(['completed' => true]);
             return redirect('todos/')->with('msg', 'task marked completed successfully');
-        }else{
-            $todo->update(['completed'=>false]);
+        } else {
+            $todo->update(['completed' => false]);
             return redirect('todos/')->with('msg', 'task maked incompleted successfully');
         }
-
     }
 
     public function destroy(Todo $todo)

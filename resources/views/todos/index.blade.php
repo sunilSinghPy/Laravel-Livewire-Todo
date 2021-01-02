@@ -13,7 +13,10 @@
                 <h3 class="my-4 text-center bg-warning">
                     List of Task
                     <small class="text-muted">You should compelete</small>
+                    <a href="{{route('todos.create')}}"><i class="fa fa-plus-circle"
+                        style="font-size: 24px;color:green"></i></a>
                 </h3>
+
                 <div>
                     <x-alert />
                     <table class="table table-hover">
@@ -25,7 +28,7 @@
                                             @method('PUT')
                                             @csrf
                                             <button type="submit" class="btn"><i class="fas fa-calendar-check"
-                                                    style="font-size: 36px;color:green"></i></button>
+                                                    style="font-size: 24px;color:green"></i></button>
                                         </form>
                                     </td>
                                     <td class="text-muted"><strike>{{ $todo->title }}</strike></td>
@@ -43,12 +46,10 @@
                                 <td><span class=" badge badge-primary badge-pill">{{ $todo->updated_at->diffForHumans() }}
                                     </span></td>
                                 <td>
-                                    <form action="/todos/{{ $todo->id }}/edit" method="POST">
 
-                                        @csrf
-                                        <button type="submit" class="btn"><i class="fas fa-edit text-info"
-                                            style="font-size: 24px"></i></button>
-                                    </form>
+                                        <a href="{{route('todos.edit',$todo->id)}}"><i class="fas fa-edit text-info"
+                                            style="font-size: 24px"></i></button></a>
+
                                 </td>
                                 <td>
                                     <button class="btn " data-toggle="modal"
