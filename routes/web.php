@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
+use App\Models\Todo;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,6 +21,8 @@ Route::get('/', function () {
 });
 Route::get('/users', [UserController::class, 'index']);
 Route::resource('todos', TodoController::class);
+Route::put('/todos/{todo}/complete',[TodoController::class,'complete'])->name('todos.complete');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

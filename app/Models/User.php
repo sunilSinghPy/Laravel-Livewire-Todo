@@ -41,6 +41,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    /**
+     * relationship with Todo
+     */
+    public function todos()
+    {
+        return $this->hasMany(Todo::class);
+    }
 
     // /**
     //  * The accesser for ucFisrt name.

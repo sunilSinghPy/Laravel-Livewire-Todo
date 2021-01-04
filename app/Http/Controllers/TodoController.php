@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 
 class TodoController extends Controller
 {
@@ -29,9 +30,11 @@ class TodoController extends Controller
 
         if ($request->title) {
             $validated = $request->validate([
-                'title' => 'required|max:254|min:5'
+                'title' => 'required|max:254|min:5',
+                'body'  => 'required|min:10|max:500',
             ]);
-            Todo::create($validated);
+            auth()->user()->todos()->create($validated);
+            // Todo::create($validated);
             return redirect()->back()->with('msg', 'task added successfully');
         }
 
@@ -55,6 +58,13 @@ class TodoController extends Controller
             return redirect('todos/')->with('msg', 'task updated successfully');
         }
     }
+    public function destroy(Todo $todo)
+    {
+
+
+        $todo->delete();
+        return redirect()->back()->with('msg', 'task deleted successfully');
+    }
     public function complete(Todo $todo)
     {
         if (!$todo->completed) {
@@ -64,13 +74,5 @@ class TodoController extends Controller
             $todo->update(['completed' => false]);
             return redirect('todos/')->with('msg', 'task maked incompleted successfully');
         }
-    }
-
-    public function destroy(Todo $todo)
-    {
-
-
-        $todo->delete();
-        return redirect()->back()->with('msg', 'task deleted successfully');
     }
 }
