@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Todo;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\Model;
 
 class TodoController extends Controller
 {
@@ -14,16 +13,30 @@ class TodoController extends Controller
     }
     public function index()
     {
+
+
+        if (auth()->check()) {
+            $todos = auth()
+                ->user()
+                ->todos()
+                ->orderBy('completed')
+                ->get();
+
+            return view('todos.index', compact('todos'));
+        }
         $todos = Todo::orderBy('completed')->get();
-
-
         return view('todos.index', compact('todos'));
+    }
+    public function show(Todo $todo)
+    {
+
+        return view('todos.show', compact('todo'));
     }
 
     public function create()
     {
-
-        return view('todos.create');
+        $todos = auth()->user()->todos()->orderBy('completed')->get();
+        return view('todos.create', compact('todos'));
     }
     public function store(Request $request)
     {
@@ -51,9 +64,10 @@ class TodoController extends Controller
         if ($request->title) {
             $validated = $request->validate([
                 'title' => 'required|max:254|min:5',
-
+                'body' => 'required|min:10|max:500',
             ]);
             $validated['completed'] = false;
+
             $todo->update($validated);
             return redirect('todos/')->with('msg', 'task updated successfully');
         }
@@ -67,6 +81,8 @@ class TodoController extends Controller
     }
     public function complete(Todo $todo)
     {
+
+
         if (!$todo->completed) {
             $todo->update(['completed' => true]);
             return redirect('todos/')->with('msg', 'task marked completed successfully');
