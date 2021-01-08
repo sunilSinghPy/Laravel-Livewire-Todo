@@ -56,8 +56,8 @@ class TodoController extends Controller
                 'title' => 'required|max:254|min:5',
                 'body'  => 'required|min:10|max:500',
             ]);
-            auth()->user()->todos()->create($validated);
-            // Todo::create($validated);
+            $todo = auth()->user()->todos()->create($validated);
+            dd($todo);
             return redirect()->back()->with('msg', 'task added successfully');
         }
 
@@ -75,6 +75,7 @@ class TodoController extends Controller
      */
     public function update(Request $request, Todo $todo)
     {
+
         if ($request->title) {
             $validated = $request->validate([
                 'title' => 'required|max:254|min:5',

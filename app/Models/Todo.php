@@ -12,12 +12,18 @@ class Todo extends Model
     protected $fillable = [
         'title',
         'body',
-        'completed'
+        'completed',
+        'step_name',
+
     ];
 
     public function user()
     {
        return $this->belongsTo(User::class);
 
+    }
+    public function step()
+    {
+        return $this->hasMany(Step::class);
     }
 }

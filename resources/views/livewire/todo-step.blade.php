@@ -1,24 +1,28 @@
 <div class="card-body">
-    <p class="p-2 shadow text-bold bg-lite">{{ $todo->body }}</p>
-    <hr />
-    <h3 class="justify-content-center d-flex">Add step here to complete Task
-        <a href="#" wire:click="addStep">
-            <i class="px-2 fa fa-plus-circle " style="color:green"></i>
-        </a>
-    </h3>
-    <form action="/todos/{{ $todo->id }}" method="post">
+
+
+    <form action="{{ route('todos.update', $todo->id) }}" method="post">
         @method('PUT')
         @csrf
+        <input class="form-control " value="{{$todo->title}}" type="text" name="title" >
+        <textarea class="form-control"  type="text" name="body" >{{$todo->body}}</textarea>
+        <p class="justify-content-center d-flex">Add step here to complete Task
+            <a href="#" wire:click="addStep">
+                <i class="px-2 fa fa-plus-circle " style="color:green;font-size:25px"></i>
+            </a>
+        </p>
 
-        @for ($i = 0; $i < $step && $i !=5 ; $i++)
-        <div class="py-1 d-flex justify-content-center">
-            <input class="form-control" value="" type="text" name="title" placeholder="Discribe step {{ $i + 1 }}">
-            <span wire:click="removeStep" class="px-2 py-2 fa fa-times" style="font-size:20px ;color:red;cursor:pointer"></span>
-        </div>
-        @if($i == 4)
-        <p class="text-danger bg-warning">Maximum number of Step added.</p>
-        @endif
-        @endfor
+        @foreach ($steps as $index => $step)
+
+            <div class="py-1 d-flex justify-content-center">
+                {{ $index }}
+                <input class="form-control" value="" type="text" name="steps[]" placeholder="{{'step'.($index+1)}}">
+                <span wire:click="removeStep({{ $index }})" class="px-2 py-2 fa fa-times"
+                    style="font-size:20px ;color:red;cursor:pointer"></span>
+            </div>
+
+
+        @endforeach
 
 
 

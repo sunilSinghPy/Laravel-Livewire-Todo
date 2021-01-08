@@ -7,23 +7,22 @@ use Livewire\Component;
 class TodoStep extends Component
 {
     public $todo;
-    public $step = 0;
+    public $message;
+    public $steps = [];
 
 
     public function addStep()
     {
-        $this->step++;
+        $this->steps[] = count($this->steps )+1;
     }
 
-    public function removeStep()
+    public function removeStep($index)
     {
-        $this->step--;
+
+        unset($this->steps[$index]);
     }
 
-    public function decrement()
-    {
-        $this->count--;
-    }
+
     public function render()
     {
         return view('livewire.todo-step');
