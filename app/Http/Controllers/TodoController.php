@@ -57,7 +57,15 @@ class TodoController extends Controller
                 'body'  => 'required|min:10|max:500',
             ]);
             $todo = auth()->user()->todos()->create($validated);
-            dd($todo);
+            if ($request->steps) {
+                foreach ($request->steps as $step) {
+                    $todo->step()->create([
+                        'step_name' => $step,
+                        'todo_id'  => $todo->id,
+                    ]);
+                }
+                return redirect()->route('todos.index')->with('msg', 'task added with steps successfully');
+            }
             return redirect()->back()->with('msg', 'task added successfully');
         }
 
@@ -82,6 +90,14 @@ class TodoController extends Controller
                 'body' => 'required|min:10|max:500',
             ]);
             $validated['completed'] = false;
+            if(isset($request->step)){
+                foreach($request->step as $step_name){
+                    $todo->step()->update([
+                        'step_name' =>$step_name,
+                        'todo_id'=>$todo->id,
+                    ]);
+                }
+            }
 
             $todo->update($validated);
             return redirect('todos/')->with('msg', 'task updated successfully');
@@ -92,6 +108,9 @@ class TodoController extends Controller
      */
     public function destroy(Todo $todo)
     {
+        if(!empty($todo->step)){
+          $todo->step->each->delete();
+        }
         $todo->delete();
         return redirect()->back()->with('msg', 'task deleted successfully');
     }

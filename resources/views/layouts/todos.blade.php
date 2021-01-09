@@ -1,9 +1,17 @@
+
+
+@if (!count($todos))
+<div class="d-flex justify-content-center bg-info ">
+    <p class="pt-2 font-weight-bolder justify-content-center">NO Task Found. Add Your First Task Now.</p>
+</div>
+@endif
+
 <table class="table table-hover">
     <tr>
-        @foreach ($todos as $todo)
+         @foreach ($todos as $todo)
             @if ($todo->completed)
                 <td>
-                    <form action="{{route('todos.complete',$todo)}}" method="POST">
+                    <form action="{{ route('todos.complete', $todo) }}" method="POST">
                         @method('PUT')
                         @csrf
                         <button type="submit" class="btn"><i class="fas fa-calendar-check"
@@ -13,39 +21,39 @@
                 <td class="text-muted"><strike>{{ $todo->title }}</strike></td>
             @else
                 <td>
-                    <form action="{{route('todos.complete',$todo)}}" method="POST">
+                    <form action="{{ route('todos.complete', $todo) }}" method="POST">
                         @method('PUT')
                         @csrf
                         <button type="submit" class="btn"><i class="fas fa-calendar-check"
                                 style="font-size: 36px;color:tomato"></i></button>
                     </form>
                 </td>
-                <td><a href="{{route('todos.show',$todo)}}" >{{ $todo->title }}</a></td>
+                <td><a href="{{ route('todos.show', $todo) }}">{{ $todo->title }}</a></td>
             @endif
             <td>
-                {{$todo->user->name}}  <span class="shadow badge badge-primary badge-pill">{{ $todo->updated_at->diffForHumans() }}
-                </span></td>
+                {{ $todo->user->name }} <span
+                    class="shadow badge badge-primary badge-pill">{{ $todo->updated_at->diffForHumans() }}
+                </span>
+            </td>
             <td>
 
-                    <a href="{{route('todos.edit',$todo->id)}}"><i class="fas fa-edit text-info"
+                <a href="{{ route('todos.edit', $todo->id) }}"><i class="fas fa-edit text-info"
                         style="font-size: 24px"></i></button></a>
 
             </td>
             <td>
-                <button class="btn " data-toggle="modal"
-                    data-target="#exampleModal"><i class="fas fa-trash text-danger"
-                    style="font-size: 24px"></i></button>
+                <button class="btn " data-toggle="modal" data-target="#exampleModal"><i class="fas fa-trash text-danger"
+                        style="font-size: 24px"></i></button>
             </td>
     </tr>
 
-    <form style="display:none" id="delete-todo-{{ $todo->id }}" action="/todos/{{ $todo->id }}"
-        method="POST">
+    <form style="display:none" id="delete-todo-{{ $todo->id }}" action="/todos/{{ $todo->id }}" method="POST">
         @method("DELETE")
         @csrf
         <input class="btn btn-danger" type="submit" value="delete" style="display:none">
     </form>
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-        aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -60,8 +68,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <form style="display:none" id="delete-todo-{{ $todo->id }}"
-                        action="/todos/{{ $todo->id }}" method="POST">
+                    <form style="display:none" id="delete-todo-{{ $todo->id }}" action="/todos/{{ $todo->id }}"
+                        method="POST">
                         @method("DELETE")
                         @csrf
                         <button class="btn btn-danger">Delete</button>
@@ -74,4 +82,6 @@
 
     @endforeach
 
+
 </table>
+

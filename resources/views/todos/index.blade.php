@@ -23,7 +23,7 @@
                 </div>
                 @auth
                     <div class="mb-4">
-                        <x-createTask />
+
                     </div>
                 @endauth
 
