@@ -91,11 +91,13 @@ class TodoController extends Controller
             ]);
             $validated['completed'] = false;
             if(isset($request->step)){
-                foreach($request->step as $step_name){
-                    $todo->step()->update([
+
+                foreach($request->step as $key => $step_name){
+                    $step = $todo->step()->find($key);
+                    $step->update([
                         'step_name' =>$step_name,
-                        'todo_id'=>$todo->id,
                     ]);
+
                 }
             }
 

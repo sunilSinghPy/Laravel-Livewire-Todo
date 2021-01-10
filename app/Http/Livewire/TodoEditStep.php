@@ -4,8 +4,9 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class TodoStep extends Component
+class TodoEditStep extends Component
 {
+    public $todo;
 
     public $steps = [];
 
@@ -20,10 +21,8 @@ class TodoStep extends Component
 
         unset($this->steps[$index]);
     }
-
-
     public function render()
     {
-        return view('livewire.todo-step');
+        return view('livewire.todo-edit-step');
     }
 }
